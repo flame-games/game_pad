@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +13,6 @@ class JoypadButton extends StatefulWidget {
 }
 
 class JoypadButtonState extends State<JoypadButton> {
-  Direction direction = Direction.none;
-  Offset delta = Offset.zero;
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -33,47 +28,76 @@ class JoypadButtonState extends State<JoypadButton> {
           child: Center(
               child: Column(
             children: <Widget>[
-              SizedBox(
-                height: 40,
-                width: 40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xccffffff),
-                    borderRadius: BorderRadius.circular(20),
+              GestureDetector(
+                onLongPressStart: (details) => onLongPressStart('X'),
+                onTapDown: (details) => onTapDown('X'),
+                onTapUp: (details) => onTapUp('X'),
+                onLongPressMoveUpdate: (details) => onLongPressMoveUpdate('X'),
+                onLongPressEnd: (details) => onLongPressEnd('X'),
+                child: SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xccffffff),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
               ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    SizedBox(
-                      height: 40,
-                      width: 40,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xccffffff),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                      width: 40,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xccffffff),
-                          borderRadius: BorderRadius.circular(20),
+                    GestureDetector(
+                        onLongPressStart: (details) => onLongPressStart('Y'),
+                        onTapDown: (details) => onTapDown('Y'),
+                        onTapUp: (details) => onTapUp('Y'),
+                        onLongPressMoveUpdate: (details) =>
+                            onLongPressMoveUpdate('Y'),
+                        onLongPressEnd: (details) => onLongPressEnd('Y'),
+                        child: SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xccffffff),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        )),
+                    GestureDetector(
+                      onLongPressStart: (details) => onLongPressStart('A'),
+                      onTapDown: (details) => onTapDown('A'),
+                      onTapUp: (details) => onTapUp('A'),
+                      onLongPressMoveUpdate: (details) =>
+                          onLongPressMoveUpdate('A'),
+                      onLongPressEnd: (details) => onLongPressEnd('A'),
+                      child: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xccffffff),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
                       ),
                     ),
                   ]),
-              SizedBox(
-                height: 40,
-                width: 40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xccffffff),
-                    borderRadius: BorderRadius.circular(20),
+              GestureDetector(
+                onLongPressStart: (details) => onLongPressStart('B'),
+                onTapDown: (details) => onTapDown('B'),
+                onTapUp: (details) => onTapUp('B'),
+                onLongPressMoveUpdate: (details) => onLongPressMoveUpdate('B'),
+                onLongPressEnd: (details) => onLongPressEnd('B'),
+                child: SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xccffffff),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
               ),
@@ -84,51 +108,23 @@ class JoypadButtonState extends State<JoypadButton> {
     );
   }
 
-  void updateDelta(Offset newDelta) {
-    final newDirection = getDirectionFromOffset(newDelta);
-
-    if (newDirection != direction) {
-      direction = newDirection;
-      widget.onDirectionChanged!(direction);
-    }
-
-    setState(() {
-      delta = newDelta;
-    });
+  void onTapDown(String type) {
+    print('onTapDown(): $type');
   }
 
-  Direction getDirectionFromOffset(Offset offset) {
-    if (offset.dx > 20) {
-      return Direction.right;
-    } else if (offset.dx < -20) {
-      return Direction.left;
-    } else if (offset.dy > 20) {
-      return Direction.down;
-    } else if (offset.dy < -20) {
-      return Direction.up;
-    }
-    return Direction.none;
+  void onTapUp(String type) {
+    print('onTapUp(): $type');
   }
 
-  void onDragDown(DragDownDetails d) {
-    calculateDelta(d.localPosition);
+  void onLongPressStart(String type) {
+    print('onLongPressStart(): $type');
   }
 
-  void onDragUpdate(DragUpdateDetails d) {
-    calculateDelta(d.localPosition);
+  void onLongPressMoveUpdate(String type) {
+    print('onLongPressMoveUpdate(): $type');
   }
 
-  void onDragEnd(DragEndDetails d) {
-    updateDelta(Offset.zero);
-  }
-
-  void calculateDelta(Offset offset) {
-    final newDelta = offset - const Offset(60, 60);
-    updateDelta(
-      Offset.fromDirection(
-        newDelta.direction,
-        min(30, newDelta.distance),
-      ),
-    );
+  void onLongPressEnd(String type) {
+    print('onLongPressEnd(): $type');
   }
 }
