@@ -13,6 +13,8 @@ class JoypadButton extends StatefulWidget {
 }
 
 class JoypadButtonState extends State<JoypadButton> {
+  final List<String> _buttonList = ['X', 'Y', 'A', 'B'];
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -28,81 +30,38 @@ class JoypadButtonState extends State<JoypadButton> {
           child: Center(
               child: Column(
             children: <Widget>[
-              GestureDetector(
-                onLongPressStart: (details) => onLongPressStart('X'),
-                onTapDown: (details) => onTapDown('X'),
-                onTapUp: (details) => onTapUp('X'),
-                onLongPressMoveUpdate: (details) => onLongPressMoveUpdate('X'),
-                onLongPressEnd: (details) => onLongPressEnd('X'),
-                child: SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xccffffff),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
+              createButton(0),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    GestureDetector(
-                        onLongPressStart: (details) => onLongPressStart('Y'),
-                        onTapDown: (details) => onTapDown('Y'),
-                        onTapUp: (details) => onTapUp('Y'),
-                        onLongPressMoveUpdate: (details) =>
-                            onLongPressMoveUpdate('Y'),
-                        onLongPressEnd: (details) => onLongPressEnd('Y'),
-                        child: SizedBox(
-                          height: 40,
-                          width: 40,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xccffffff),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        )),
-                    GestureDetector(
-                      onLongPressStart: (details) => onLongPressStart('A'),
-                      onTapDown: (details) => onTapDown('A'),
-                      onTapUp: (details) => onTapUp('A'),
-                      onLongPressMoveUpdate: (details) =>
-                          onLongPressMoveUpdate('A'),
-                      onLongPressEnd: (details) => onLongPressEnd('A'),
-                      child: SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xccffffff),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
-              GestureDetector(
-                onLongPressStart: (details) => onLongPressStart('B'),
-                onTapDown: (details) => onTapDown('B'),
-                onTapUp: (details) => onTapUp('B'),
-                onLongPressMoveUpdate: (details) => onLongPressMoveUpdate('B'),
-                onLongPressEnd: (details) => onLongPressEnd('B'),
-                child: SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xccffffff),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
+                    for(int i = 1; i < 3; i++) ... {
+                      createButton(i)
+                    }
+                    ]
               ),
+              createButton(3),
             ],
           )),
+        ),
+      ),
+    );
+  }
+
+  Widget createButton(int index) {
+    return GestureDetector(
+      onLongPressStart: (details) => onLongPressStart(_buttonList[index]),
+      onTapDown: (details) => onTapDown(_buttonList[index]),
+      onTapUp: (details) => onTapUp(_buttonList[index]),
+      onLongPressMoveUpdate: (details) => onLongPressMoveUpdate(_buttonList[index]),
+      onLongPressEnd: (details) => onLongPressEnd(_buttonList[index]),
+      child: SizedBox(
+        height: 40,
+        width: 40,
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xccffffff),
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
       ),
     );
