@@ -9,11 +9,42 @@ import 'components/controller.dart';
 
 class MainGame extends FlameGame with KeyboardEvents, HasGameRef {
   final Controller _controller = Controller();
+  final TextPaint _textPaint = TextPaint(
+    style: const TextStyle(
+      color: Color(0xFFFFFFFF),
+      fontSize: 16.0,
+      fontFamily: 'Roboto',
+    ),
+  );
+
+  late Direction _joyPadDirection = Direction.none;
+  List<String> _buttonStateList = [];
+  List<String> _buttonLongPressStateList = [];
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
     add(_controller);
+  }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+    _textPaint.render(
+      canvas,
+      'JoyPad Direction: $_joyPadDirection',
+      Vector2(20, 20),
+    );
+    _textPaint.render(
+      canvas,
+      'Button State: $_buttonStateList',
+      Vector2(20, 40),
+    );
+    _textPaint.render(
+      canvas,
+      'Long Press Button State: $_buttonLongPressStateList',
+      Vector2(20, 60),
+    );
   }
 
   @override
@@ -38,11 +69,11 @@ class MainGame extends FlameGame with KeyboardEvents, HasGameRef {
   }
 
   void onJoyPadDirectionChanged(Direction direction) {
-    print(direction);
+    _joyPadDirection = direction;
   }
 
   void onButtonChanged(List<String> buttonStateList, List<String> buttonLongPressStateList) {
-    print(buttonStateList);
-    print(buttonLongPressStateList);
+    _buttonStateList = buttonStateList;
+    _buttonLongPressStateList = buttonLongPressStateList;
   }
 }
