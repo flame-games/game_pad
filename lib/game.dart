@@ -18,6 +18,7 @@ class MainGame extends FlameGame with KeyboardEvents, HasGameRef {
   );
 
   late Direction _joyPadDirection = Direction.none;
+  late Direction? _keyEventDirection = Direction.none;
   List<String> _buttonStateList = [];
   List<String> _buttonLongPressStateList = [];
 
@@ -30,21 +31,21 @@ class MainGame extends FlameGame with KeyboardEvents, HasGameRef {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    _textPaint.render(
-      canvas,
+
+    final textList = [
       'JoyPad Direction: $_joyPadDirection',
-      Vector2(20, 20),
-    );
-    _textPaint.render(
-      canvas,
+      'KeyEvent Direction: $_keyEventDirection',
       'Button State: $_buttonStateList',
-      Vector2(20, 40),
-    );
-    _textPaint.render(
-      canvas,
       'Long Press Button State: $_buttonLongPressStateList',
-      Vector2(20, 60),
-    );
+    ];
+
+    for(int i = 0; i < textList.length; i++) {
+      _textPaint.render(
+        canvas,
+        textList[i],
+        Vector2(20, 20 * (i + 1)),
+      );
+    }
   }
 
   @override
@@ -62,8 +63,7 @@ class MainGame extends FlameGame with KeyboardEvents, HasGameRef {
       keyDirection = Direction.down;
     }
 
-    print(isKeyDown);
-    print(keyDirection);
+    _keyEventDirection = (keyDirection != null) ? keyDirection : Direction.none;
 
     return super.onKeyEvent(event, keysPressed);
   }
