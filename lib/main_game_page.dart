@@ -34,7 +34,7 @@ class MainGameState extends State<MainGamePage> {
               child: Padding(
                 padding: const EdgeInsets.all(32.0),
                 child:
-                JoypadButton(),
+                JoypadButton(onButtonChanged: game.onButtonChanged),
               ),
             )
           ],

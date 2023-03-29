@@ -1,11 +1,20 @@
+import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 
 import 'helpers/direction.dart';
+import 'components/controller.dart';
 
-class MainGame extends FlameGame with KeyboardEvents {
+class MainGame extends FlameGame with KeyboardEvents, HasGameRef {
+  final Controller _controller = Controller();
+
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
+    add(_controller);
+  }
 
   @override
   KeyEventResult onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
@@ -30,5 +39,10 @@ class MainGame extends FlameGame with KeyboardEvents {
 
   void onJoyPadDirectionChanged(Direction direction) {
     print(direction);
+  }
+
+  void onButtonChanged(List<String> buttonStateList, List<String> buttonLongPressStateList) {
+    print(buttonStateList);
+    print(buttonLongPressStateList);
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'direction.dart';
+typedef ValueChangedCallback = void Function(List<String> arg1, List<String> arg2);
 
 class JoypadButton extends StatefulWidget {
-  final ValueChanged<Direction>? onDirectionChanged;
+  final ValueChangedCallback? onButtonChanged;
 
-  const JoypadButton({Key? key, this.onDirectionChanged}) : super(key: key);
+  const JoypadButton({Key? key, this.onButtonChanged}) : super(key: key);
 
   @override
   JoypadButtonState createState() => JoypadButtonState();
@@ -14,6 +14,8 @@ class JoypadButton extends StatefulWidget {
 
 class JoypadButtonState extends State<JoypadButton> {
   final List<String> _buttonList = ['X', 'Y', 'A', 'B'];
+  final List<String> _buttonStateList = [];
+  final List<String> _buttonLongPressStateList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -67,23 +69,35 @@ class JoypadButtonState extends State<JoypadButton> {
     );
   }
 
+  void updateButton() {
+    widget.onButtonChanged!(_buttonStateList, _buttonLongPressStateList);
+    // setState(() {
+    //   delta = newDelta;
+    // });
+  }
+
   void onTapDown(String type) {
-    print('onTapDown(): $type');
+    _buttonStateList.add(type);
+    updateButton();
   }
 
   void onTapUp(String type) {
-    print('onTapUp(): $type');
+    _buttonStateList.removeWhere((item) => item == type);
+    updateButton();
   }
 
   void onLongPressStart(String type) {
-    print('onLongPressStart(): $type');
+    _buttonLongPressStateList.add(type);
+    updateButton();
   }
 
   void onLongPressMoveUpdate(String type) {
-    print('onLongPressMoveUpdate(): $type');
+    updateButton();
   }
 
   void onLongPressEnd(String type) {
-    print('onLongPressEnd(): $type');
+    _buttonStateList.removeWhere((item) => item == type);
+    _buttonLongPressStateList.removeWhere((item) => item == type);
+    updateButton();
   }
 }
